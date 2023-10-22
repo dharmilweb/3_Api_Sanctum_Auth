@@ -7,59 +7,165 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## About Api Authentication
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
+Laravel is a provide default Api Sanctum Authentication follow some command & stapes.
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Learning Api Authentication
+- Create Project
+    - Command :-
+    ```
+        laravel new 3_Api_Sanctum_Authentication
+        cd 3_Api_Sanctum_Authentication
+    ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Add Database :-
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    - Change .env file :-
+        ```html
+            DB_CONNECTION=mysql
+            DB_HOST=127.0.0.1
+            DB_PORT=3306
+            DB_DATABASE=3_Api_Sanctum_Auth
+            DB_USERNAME=root
+            DB_PASSWORD=
+        ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-  Add Tables in Database...
+    - Command :-
+        ```
+            php artisan migrate
+        ```
 
-## Laravel Sponsors
+        <p align="center"><a href="https://raw.githubusercontent.com/dharmilweb/3_Api_Sanctum_Auth/main/public/Api_Auth/Input_1.png" target="_blank"><img src="https://github.com/dharmilweb/3_Api_Sanctum_Auth/blob/main/public/Api_Auth/Input_1.png" width="400" alt="Laravel Logo"></a></p>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- Add Sanctum Configration...
+    - Command :-
+        ```
+            composer require laravel/sanctum
+            php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+        ```
 
-### Premium Partners
+    - Add Middleware in Kernel.php file...
+        ```html
+            protected $routeMiddleware = [
+                ---------
+                
+                \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+                'throttle:api',
+                \Illuminate\Routing\Middleware\SubstituteBindings::class,
+                ---------
+            ]
+        ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+    - Add  User.php Model...
+        ```html
+            
+            use Laravel\Sanctum\HasApiTokens;
 
-## Contributing
+            class User extends Authenticatable
+            {
+                use HasApiTokens
+                ----
+            }
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+        ```
 
-## Code of Conduct
+    - Swagger Intigration :-
+        - Command :-
+            ```
+                composer require "darkaonline/l5-swagger"
+                php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+            ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+        - Add Swagger Base in Controller file...
 
-## Security Vulnerabilities
+            ```html
+                <?php
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+                namespace App\Http\Controllers;
+
+                use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+                use Illuminate\Foundation\Validation\ValidatesRequests;
+                use Illuminate\Routing\Controller as BaseController;
+                    /**
+                        * @OA\Info(
+                        *    title="Your super  ApplicationAPI",
+                        *    version="1.0.0",
+                        * )
+                        * @OA\SecurityScheme(
+                        *        type="http",
+                        *        description="Login with email and password to get the authentication token",
+                        *       name="Token based Based",
+                        *        in="header",
+                        *        scheme="bearer",
+                        *        bearerFormat="JWT",
+                        *        securityScheme="apiAuth",
+                        * ),
+                    */
+                class Controller extends BaseController
+                {
+                    use AuthorizesRequests, ValidatesRequests;
+                }
+
+            ```
+
+    - Create Controller
+        - Command :-
+            ```
+                php artisan make:controller AuthController
+            ```
+
+        - Inside [AuthController] file...
+
+        [AuthController]: https://github.com/dharmilweb/3_Api_Sanctum_Auth/blob/master/app/Http/Controllers/AuthController.php
+
+
+    - Create api.php file...
+
+        ```html
+            use App\Http\Controllers\AuthController;
+
+            Route::post('/register', [AuthController::class, 'register'])->name('register');
+            Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+            Route::group(['middleware' => 'auth:sanctum','prefix' => 'auth'], function ($router) {
+
+                Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+                Route::post('/me', [AuthController::class, 'me'])->name('me');
+            });
+        ```
+                
+    - Run Swagger... [ First Create AuthController Then Run Swagger Command ]
+        - Command :-
+        ```
+            php artisan l5-swagger:generate
+        ```
+
+    - Run Laravel Project...
+        - Command :-
+            ```
+                php artisan serve
+            ```
+
+        - Url :-
+            ```
+                http://localhost:8000/api/documentation
+            ```
+                
+        <p align="center"><a href="https://raw.githubusercontent.com/dharmilweb/3_Api_Sanctum_Auth/main/public/Api_Auth/Input_2.png" target="_blank"><img src="https://github.com/dharmilweb/3_Api_Sanctum_Auth/blob/main/public/Api_Auth/Input_2.png" width="400" alt="Laravel Logo"></a></p>
+
+## Authentications
+Laravel having different types of `Authentication` for Web & Api Checkout its.
+
+- [Web Authentication]
+- [Api Jwt Authentication]
+- [Api Sanctum Authentication]
+
+[Web Authentication]: https://github.com/dharmilweb/1_Web_Authentication
+[Api Jwt Authentication]: https://github.com/dharmilweb/2_Api_Jwt_Authentication
+[Api Sanctum Authentication]: https://github.com/dharmilweb/3_Api_Sanctum_Auth
 
 ## License
 
