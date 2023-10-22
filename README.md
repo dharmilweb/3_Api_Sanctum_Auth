@@ -38,7 +38,7 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
             php artisan migrate
         ```
 
-        <p align="center"><a href="https://raw.githubusercontent.com/dharmilweb/3_Api_Sanctum_Auth/main/public/Api_Auth/Input_1.png" target="_blank"><img src="https://github.com/dharmilweb/3_Api_Sanctum_Auth/blob/main/public/Api_Auth/Input_1.png" width="400" alt="Laravel Logo"></a></p>
+        <p align="center"><a href="https://raw.githubusercontent.com/dharmilweb/3_Api_Sanctum_Auth/master/public/Api_Auth/Input_1.png" target="_blank"><img src="https://github.com/dharmilweb/3_Api_Sanctum_Auth/blob/master/public/Api_Auth/Input_1.png" width="400" alt="Laravel Logo"></a></p>
 
 - Add Sanctum Configration...
     - Command :-
@@ -153,8 +153,8 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
             ```
                 http://localhost:8000/api/documentation
             ```
-                
-        <p align="center"><a href="https://raw.githubusercontent.com/dharmilweb/3_Api_Sanctum_Auth/main/public/Api_Auth/Input_2.png" target="_blank"><img src="https://github.com/dharmilweb/3_Api_Sanctum_Auth/blob/main/public/Api_Auth/Input_2.png" width="400" alt="Laravel Logo"></a></p>
+
+        <p align="center"><a href="https://raw.githubusercontent.com/dharmilweb/3_Api_Sanctum_Auth/master/public/Api_Auth/Input_2.png" target="_blank"><img src="https://github.com/dharmilweb/3_Api_Sanctum_Auth/blob/master/public/Api_Auth/Input_2.png" width="400" alt="Laravel Logo"></a></p>
 
 ## Authentications
 Laravel having different types of `Authentication` for Web & Api Checkout its.
