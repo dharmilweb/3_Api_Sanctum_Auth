@@ -16,7 +16,7 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 - Create Project
     - Command :-
     ```
-        laravel new 3_Api_Sanctum_Authentication
+        laravel new 3_Api_Sanctum_Authentication    &&      composer create-project laravel/laravel 3_Api_Sanctum_Authentication
         cd 3_Api_Sanctum_Authentication
     ```
 
@@ -162,10 +162,12 @@ Laravel having different types of `Authentication` for Web & Api Checkout its.
 - [Web Authentication]
 - [Api Jwt Authentication]
 - [Api Sanctum Authentication]
+- [Full Authentication Project CURD]
 
 [Web Authentication]: https://github.com/dharmilweb/1_Web_Authentication
 [Api Jwt Authentication]: https://github.com/dharmilweb/2_Api_Jwt_Authentication
 [Api Sanctum Authentication]: https://github.com/dharmilweb/3_Api_Sanctum_Auth
+[Full Authentication Project CURD]: https://github.com/dharmilweb/4_Auth_Product_Curd
 
 ## License
 
